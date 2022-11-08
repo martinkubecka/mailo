@@ -1,0 +1,67 @@
+ioc_definitions:
+  btc:
+    jiskb_name: Adresa kryptomeny
+    jiskb_id: 13
+    misp_category: Financial fraud
+    misp_type: btc
+    rgx: "-"
+  cve:
+    jiskb_name: CVE
+    jiskb_id: 3
+    misp_category: Payload delivery
+    misp_type: vulnerability
+    rgx: "-"
+  dst_ip:
+    jiskb_name: Cieľová IP adresa
+    jiskb_id: 16
+    misp_category: Payload delivery
+    misp_type: ip-dst
+    rgx: "-"
+  dst_email:
+    jiskb_name: Cieľový e-mail
+    jiskb_id: 10
+    misp_category: Targeting data
+    misp_type: email-dst
+    rgx: "-"
+  domain:
+    jiskb_name: Doména
+    jiskb_id: 14
+    misp_category: Payload delivery
+    misp_type: domain
+    rgx: "-"
+  sha256:
+    jiskb_name: Hash SHA256
+    jiskb_id: 12
+    misp_category: Artifacts dropped
+    misp_type: sha256
+    rgx: "-"
+  malware_url:
+    jiskb_name: Malware URL
+    jiskb_id: 7
+    misp_category: Payload delivery
+    misp_type: url
+    rgx: "-"
+  phishing_url:
+    jiskb_name: Phishingové URL
+    jiskb_id: 5
+    misp_category: Payload delivery
+    misp_type: url
+    rgx: "-"
+  redirect_url:
+    jiskb_name: Redirect URL
+    jiskb_id: 8
+    misp_category: Payload delivery
+    misp_type: url
+    rgx: "-"
+  src_ip:
+    jiskb_name: Zdrojová IP adresa
+    jiskb_id: 15
+    misp_category: Payload delivery
+    misp_type: ip-src
+    rgx: "-"
+  src_mail:
+    jiskb_name: Zdrojový e-mail
+    jiskb_id: 9
+    misp_category: Payload delivery
+    misp_type: email-src
+    rgx: "-"
