@@ -1,0 +1,9 @@
+{
+    "headers":[
+        "Return-Path",
+        "Message-Id", 
+        "Message-ID",  
+        "List-ID",
+        "Sender"
+    ]
+}

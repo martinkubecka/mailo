@@ -1,0 +1,14 @@
+{
+    "headers":[
+        "X-Received", 
+        "X-Receiver", 
+        "X-Sender", 
+        "X-Source-Sender",
+        "X-Source-Auth",
+        "X-Report-Abuse",
+        "X-Mailer", 
+        "X-Postmaster-Msgtype", 
+        "X-PHP-Originating-Script", 
+        "X-Notes-Item"
+    ]
+}
