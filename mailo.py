@@ -9,14 +9,13 @@ from extractors.msg_extractor import MSGExtractor
 
 def banner():
     print(r"""
-         _
-        [_|
-   .-=====|=-.
-   |      |  |
-   | m@ilo   |
-   |_________|__/
-       ||
-       ||   
+             _
+            [_|
+       .-=====|=-.
+       | m@ilo   |
+       |_________|__/
+           ||
+           ||   
      """)
 
 def arg_formatter():
@@ -56,15 +55,14 @@ def init_logger():
 def main():
 
     # TODO
-    # fix 'mac' regex (see 'mailo\samples\eml\rusko\extracted_data.json')
     # anonymize header
     # convert time fields to one format
     # clean parsed 'received from' field with regex (see 'eml/test3/received_fields.json')
     # check domains for whitelists
     # check for base_tag
-    # use redSnooper for URLS
 
     # NOTE : DONE
+    # fixed incorect MAC regex
     # fixed MSG/EML header to file
     # header: remove all X-... ; use whitelist
     # extracted specific (interesting) headers

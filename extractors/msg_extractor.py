@@ -121,11 +121,9 @@ class MSGExtractor():
             name=mail.from_[0][0],
             address=mail.from_[0][1])
 
-        extracted_data['email_recipients'] = []
-        for name, address in mail.cc:
-            extracted_data['email_recipients'].append(dict(
-                name=name,
-                address=address))
+        extracted_data['email_recipient'] = dict(
+            name=mail.to[0][0],
+            address=mail.to[0][1])
 
         # only name wihtout the email address
         # extracted_data['email_to_name'] = mail.to[0][0]   # REDUNDANT

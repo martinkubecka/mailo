@@ -9,194 +9,115 @@
   ],
   "definitions": {
     "url": {
-      "rgx": "https?:\\/\\/(?:www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}\\b(?:[-a-zA-Z0-9()@:%_\\+.~#?&//=]*)",
-      "misp_category": "",
-      "misp_type": ""
+      "rgx": "https?:\\/\\/(?:www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}\\b(?:[-a-zA-Z0-9()@:%_\\+.~#?&//=]*)"
     },
     "ip": {
-      "rgx": "^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)",
-      "misp_category": "",
-      "misp_type": ""
+      "rgx": "^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)"
     },
     "mac": {
-      "rgx": "([0-9a-fA-F]:?){12}",
-      "misp_category": "",
-      "misp_type": ""
+      "rgx": "^([0-9A-Fa-f]{1,2}[:-]){5}([0-9A-Fa-f]{1,2})$"
     },
     "dns": {
-      "rgx": "^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\\-]*[a-zA-Z0-9])\\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\\-]*[A-Za-z0-9])$",
-      "misp_category": "",
-      "misp_type": ""
+      "rgx": "^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\\-]*[a-zA-Z0-9])\\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\\-]*[A-Za-z0-9])$"
     },
     "cve": {
-      "rgx": "CVE-[1-2]\\d{1,4}-\\d{1,7}",
-      "misp_category": "",
-      "misp_type": ""
+      "rgx": "CVE-[1-2]\\d{1,4}-\\d{1,7}"
     },
-    "email" : {
-      "rgx": "[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}",
-      "misp_category": "",
-      "misp_type": ""
+    "email": {
+      "rgx": "[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}"
     },
-
     "crypto_bitcoin": {
-      "rgx": "\\b(?<![+/=])[13][A-Za-z0-9]{26,33}(?![+/=])\\b",
-      "misp_category": "",
-      "misp_type": ""
+      "rgx": "\\b(?<![+/=])[13][A-Za-z0-9]{26,33}(?![+/=])\\b"
     },
     "crypto_bitcoin_PK": {
-      "rgx": "\\b(?<![+/=])[5KL][1-9A-HJ-NP-Za-km-z]{50,51}(?![+/=])\\b",
-      "misp_category": "",
-      "misp_type": ""
+      "rgx": "\\b(?<![+/=])[5KL][1-9A-HJ-NP-Za-km-z]{50,51}(?![+/=])\\b"
     },
     "crypto_ethereum": {
-      "rgx": "\\b(?<![+/=])0x[A-Za-z0-9]{40}(?![+/=])\\b",
-      "misp_category": "",
-      "misp_type": ""
+      "rgx": "\\b(?<![+/=])0x[A-Za-z0-9]{40}(?![+/=])\\b"
     },
     "crypto_bitcoin-cash": {
-      "rgx": "bitcoincash:[a-za0-9]{42}(?![+/=])\\b",
-      "misp_category": "",
-      "misp_type": ""
+      "rgx": "bitcoincash:[a-za0-9]{42}(?![+/=])\\b"
     },
     "crypto_litecoinn": {
-      "rgx": "\\b(?<![+/=])[ML][A-Za-z0-9]{33}(?![+/=])\\b",
-      "misp_category": "",
-      "misp_type": ""
+      "rgx": "\\b(?<![+/=])[ML][A-Za-z0-9]{33}(?![+/=])\\b"
     },
     "crypto_monero": {
-      "rgx": "\\b(?<![+/=()])4[A-Za-z0-9]{94}(?![+/=()])\\b",
-      "misp_category": "",
-      "misp_type": ""
+      "rgx": "\\b(?<![+/=()])4[A-Za-z0-9]{94}(?![+/=()])\\b"
     },
     "crypto_zcash": {
-      "rgx": "\\b(?<![+/=()])t[12][A-Za-z0-9]{33}(?![+/=()])\\b",
-      "misp_category": "",
-      "misp_type": ""
+      "rgx": "\\b(?<![+/=()])t[12][A-Za-z0-9]{33}(?![+/=()])\\b"
     },
     "crypto_dash": {
-      "rgx": "\\b(?<![+/=])X[A-Za-z0-9]{33}(?![+/=])\\b",
-      "misp_category": "",
-      "misp_type": ""
+      "rgx": "\\b(?<![+/=])X[A-Za-z0-9]{33}(?![+/=])\\b"
     },
-
     "bank_iban": {
-      "rgx": "^([A-Z]{2})([0-9]{2})([A-Z0-9]{9,30})$",
-      "misp_category": "",
-      "misp_type": ""
+      "rgx": "^([A-Z]{2})([0-9]{2})([A-Z0-9]{9,30})$"
     },
     "bank_card_visa": {
-      "rgx": "\\b4\\d{3}(?:[\\ \\-]?)\\d{4}(?:[\\ \\-]?)\\d{4}(?:[\\ \\-]?)\\d{4}\\b",
-      "misp_category": "",
-      "misp_type": ""
+      "rgx": "\\b4\\d{3}(?:[\\ \\-]?)\\d{4}(?:[\\ \\-]?)\\d{4}(?:[\\ \\-]?)\\d{4}\\b"
     },
     "bank_card_mastercard": {
-      "rgx": "\\b5[1-5]\\d{2}(?:[\\ \\-]?)\\d{4}(?:[\\ \\-]?)\\d{4}(?:[\\ \\-]?)\\d{4}\\b",
-      "misp_category": "",
-      "misp_type": ""
+      "rgx": "\\b5[1-5]\\d{2}(?:[\\ \\-]?)\\d{4}(?:[\\ \\-]?)\\d{4}(?:[\\ \\-]?)\\d{4}\\b"
     },
     "bank_card_discover": {
-      "rgx": "\\b6(?:011|22(?:(?=[\\ \\-]?(?:2[6-9]|[3-9]))|[2-8]|9(?=[\\ \\-]?(?:[01]|2[0-5])))|4[4-9]\\d|5\\d\\d)(?:[\\ \\-]?)\\d{4}(?:[\\ \\-]?)\\d{4}(?:[\\ \\-]?)\\d{4}\\b",
-      "misp_category": "",
-      "misp_type": ""
+      "rgx": "\\b6(?:011|22(?:(?=[\\ \\-]?(?:2[6-9]|[3-9]))|[2-8]|9(?=[\\ \\-]?(?:[01]|2[0-5])))|4[4-9]\\d|5\\d\\d)(?:[\\ \\-]?)\\d{4}(?:[\\ \\-]?)\\d{4}(?:[\\ \\-]?)\\d{4}\\b"
     },
     "bank_card_jcb": {
-      "rgx": "\\b35(?:2[89]|[3-8]\\d)(?:[\\ \\-]?)\\d{4}(?:[\\ \\-]?)\\d{4}(?:[\\ \\-]?)\\d{4}\\b",
-      "misp_category": "",
-      "misp_type": ""
+      "rgx": "\\b35(?:2[89]|[3-8]\\d)(?:[\\ \\-]?)\\d{4}(?:[\\ \\-]?)\\d{4}(?:[\\ \\-]?)\\d{4}\\b"
     },
     "bank_card_americanExpress": {
-      "rgx": "\\b3[47]\\d\\d(?:[\\ \\-]?)\\d{6}(?:[\\ \\-]?)\\d{5}\\b",
-      "misp_category": "",
-      "misp_type": ""
+      "rgx": "\\b3[47]\\d\\d(?:[\\ \\-]?)\\d{6}(?:[\\ \\-]?)\\d{5}\\b"
     },
     "bank_card_maestro": {
-      "rgx": "\\b(?:5[0678]\\d\\d|6304|6390|67\\d\\d)\\d{8,15}\\b",
-      "misp_category": "",
-      "misp_type": ""
+      "rgx": "\\b(?:5[0678]\\d\\d|6304|6390|67\\d\\d)\\d{8,15}\\b"
     },
-
     "cloud_aws_access_key": {
-      "rgx": "(?<![A-Z0-9])=[A-Z0-9]{20}(?![A-Z0-9])",
-      "misp_category": "",
-      "misp_type": ""
+      "rgx": "(?<![A-Z0-9])=[A-Z0-9]{20}(?![A-Z0-9])"
     },
     "cloud_aws_secret_key": {
-      "rgx": "(?<!=[A-Za-z0-9+])=[A-Za-z0-9+]{40}(?![A-Za-z0-9+])",
-      "misp_category": "",
-      "misp_type": ""
+      "rgx": "(?<!=[A-Za-z0-9+])=[A-Za-z0-9+]{40}(?![A-Za-z0-9+])"
     },
     "cloud_google_api_key": {
-      "rgx": "=AIza[0-9a-zA-Z-_]{35}",
-      "misp_category": "",
-      "misp_type": ""
+      "rgx": "=AIza[0-9a-zA-Z-_]{35}"
     },
-
     "code_base64": {
-      "rgx": "r\"(?:[A-Za-z0-9+/]{4}){2,}(?:[A-Za-z0-9+/]{2}[AEIMQUYcgkosw048]=|[A-Za-z0-9+/][AQgw]==)\"",
-      "misp_category": "",
-      "misp_type": ""
+      "rgx": "r\"(?:[A-Za-z0-9+/]{4}){2,}(?:[A-Za-z0-9+/]{2}[AEIMQUYcgkosw048]=|[A-Za-z0-9+/][AQgw]==)\""
     },
     "code_md5": {
-      "rgx": "r\"([a-fA-F\\d]{32})\"",
-      "misp_category": "",
-      "misp_type": "md5"
+      "rgx": "r\"([a-fA-F\\d]{32})\""
     },
     "code_sha256": {
-      "rgx": "([a-fA-F\\d]{64})",
-      "misp_category": "",
-      "misp_type": "sha256"
+      "rgx": "([a-fA-F\\d]{64})"
     },
     "code_bash": {
-      "rgx": "\"#!\\/[\\w]*\\/bash\"",
-      "misp_category": "",
-      "misp_type": ""
+      "rgx": "\"#!\\/[\\w]*\\/bash\""
     },
     "code_c": {
-      "rgx": "\"\\#include\\ \\<[a-z\\/]+.h\\>\"",
-      "misp_category": "",
-      "misp_type": ""
+      "rgx": "\"\\#include\\ \\<[a-z\\/]+.h\\>\""
     },
     "code_js": {
-      "rgx": "\"function\\(\\)\"",
-      "misp_category": "",
-      "misp_type": ""
+      "rgx": "\"function\\(\\)\""
     },
     "code_php": {
-      "rgx": "\"\\<\\?php\"",
-      "misp_category": "",
-      "misp_type": ""
+      "rgx": "\"\\<\\?php\""
     },
     "code_python": {
-      "rgx": "\"import\\ [\\w]+\"",
-      "misp_category": "",
-      "misp_type": ""
+      "rgx": "\"import\\ [\\w]+\""
     },
     "code_shell": {
-      "rgx": "\"[a-zA-Z0-9]+@[a-zA-Z0-9\\-]+\\:\\~\\$\"",
-      "misp_category": "",
-      "misp_type": ""
+      "rgx": "\"[a-zA-Z0-9]+@[a-zA-Z0-9\\-]+\\:\\~\\$\""
     },
-
     "dark_telegram": {
-      "rgx": "(telegram\\.me|t\\.me|telegram\\.dog|telesco\\.pe)/([^\\.\\\",\\s]+)",
-      "misp_category": "",
-      "misp_type": ""
+      "rgx": "(telegram\\.me|t\\.me|telegram\\.dog|telesco\\.pe)/([^\\.\\\",\\s]+)"
     },
     "dark_onion": {
-      "rgx": "\"((http|https|ftp)?(?:\\://)?([a-zA-Z0-9\\.\\-]+(\\:[a-zA-Z0-9\\.&%\\$\\-]+)*@)*((25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9])\\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[0-9])|localhost|([a-zA-Z0-9\\-]+\\.)*[a-zA-Z0-9\\-]+\\.onion)(\\:[0-9]+)*(/($|[a-zA-Z0-9\\.\\,\\?\\'\\\\\\+&%\\$#\\=~_\\-]+))*)\"",
-      "misp_category": "",
-      "misp_type": ""
+      "rgx": "\"((http|https|ftp)?(?:\\://)?([a-zA-Z0-9\\.\\-]+(\\:[a-zA-Z0-9\\.&%\\$\\-]+)*@)*((25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9])\\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[0-9])|localhost|([a-zA-Z0-9\\-]+\\.)*[a-zA-Z0-9\\-]+\\.onion)(\\:[0-9]+)*(/($|[a-zA-Z0-9\\.\\,\\?\\'\\\\\\+&%\\$#\\=~_\\-]+))*)\""
     },
     "dark_i2p": {
-      "rgx": "\"((http|https|ftp)?(?:\\://)?([a-zA-Z0-9\\.\\-]+(\\:[a-zA-Z0-9\\.&%\\$\\-]+)*@)*((25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9])\\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[0-9])|localhost|([a-zA-Z0-9\\-]+\\.)*[a-zA-Z0-9\\-]+\\.i2p)(\\:[0-9]+)*(/($|[a-zA-Z0-9\\.\\,\\?\\'\\\\\\+&%\\$#\\=~_\\-]+))*)\"",
-      "misp_category": "",
-      "misp_type": ""
+      "rgx": "\"((http|https|ftp)?(?:\\://)?([a-zA-Z0-9\\.\\-]+(\\:[a-zA-Z0-9\\.&%\\$\\-]+)*@)*((25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9])\\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[0-9])|localhost|([a-zA-Z0-9\\-]+\\.)*[a-zA-Z0-9\\-]+\\.i2p)(\\:[0-9]+)*(/($|[a-zA-Z0-9\\.\\,\\?\\'\\\\\\+&%\\$#\\=~_\\-]+))*)\""
     },
     "sqli": {
-      "rgx": "r\"information_schema|sysdatabases|sysusers|floor\\(rand\\(|ORDER BY \\d+|\\bUNION\\s+(ALL\\s+)?SELECT\\b|\\b(UPDATEXML|EXTRACTVALUE)\\(|\\bCASE[^\\w]+WHEN.*THEN\\b|\\bWAITFOR[^\\w]+DELAY\\b|\\bCONVERT\\(|VARCHAR\\(|\\bCOUNT\\(\\*\\)|\\b(pg_)?sleep\\(|\\bSELECT\\b.*\\bFROM\\b.*\\b(WHERE|GROUP|ORDER)\\b|\\bSELECT \\w+ FROM \\w+|\\b(AND|OR|SELECT)\\b.*/\\*.*\\*/|/\\*.*\\*/.*\\b(AND|OR|SELECT)\\b|\\b(AND|OR)[^\\w]+\\d+['\\\") ]?[=><]['\\\"( ]?\\d+|ODBC;DRIVER|\\bINTO\\s+(OUT|DUMP)FILE\"",
-      "misp_category": "",
-      "misp_type": ""
+      "rgx": "r\"information_schema|sysdatabases|sysusers|floor\\(rand\\(|ORDER BY \\d+|\\bUNION\\s+(ALL\\s+)?SELECT\\b|\\b(UPDATEXML|EXTRACTVALUE)\\(|\\bCASE[^\\w]+WHEN.*THEN\\b|\\bWAITFOR[^\\w]+DELAY\\b|\\bCONVERT\\(|VARCHAR\\(|\\bCOUNT\\(\\*\\)|\\b(pg_)?sleep\\(|\\bSELECT\\b.*\\bFROM\\b.*\\b(WHERE|GROUP|ORDER)\\b|\\bSELECT \\w+ FROM \\w+|\\b(AND|OR|SELECT)\\b.*/\\*.*\\*/|/\\*.*\\*/.*\\b(AND|OR|SELECT)\\b|\\b(AND|OR)[^\\w]+\\d+['\\\") ]?[=><]['\\\"( ]?\\d+|ODBC;DRIVER|\\bINTO\\s+(OUT|DUMP)FILE\""
     }
   }
 }

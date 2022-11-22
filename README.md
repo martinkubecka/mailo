@@ -1,11 +1,16 @@
 <p align="center">
 <img src="https://github.com/martinkubecka/mailo/blob/main/docs/banner.png" alt="Logo">
-<p align="center"><b>description</b><br>
+<p align="center"><b>Parse EML or MSG email file types and extract various Indicators of Compromise.</b><br>
 </p>
 
 ---
 <h2 id="table-of-contents">Table of Contents</h2>
 
+- [:memo: Pre-requisites](#memo-pre-requisites)
+  - [:package: Installing Required Packages](#package-installing-required-packages)
+- [:desktop\_computer: Usage](#desktop_computer-usage)
+- [:toolbox: Development](#toolbox-development)
+  - [:office: Virtual environment](#office-virtual-environment)
 
 ---
 ## :memo: Pre-requisites
@@ -24,7 +29,6 @@ $ pip install -r requirements.txt
 
 ---
 ## :desktop_computer: Usage
-
 
 ```
 usage: mailo.py [-h] [-q] -i FILENAME

@@ -166,12 +166,12 @@ class EMLExtractor():
 
         # NOTE: eml samples weird format for recipients : list("email1, email2")
         # TODO: test this with a sample which contains recipients in format "NAME ADDRESS"
-        extracted_data['email_recipients'] = []
+        extracted_data['email_recipient'] = []
         # list, all  recipients emails addresses in list[0]
         recipients = mail.get_all('To')
         recipients_address = recipients[0].split(",")
         for recipient in recipients_address:
-            extracted_data['email_recipients'].append(dict(
+            extracted_data['email_recipient'].append(dict(
                 name="",
                 address=recipient.strip()))
 
