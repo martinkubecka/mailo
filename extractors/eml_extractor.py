@@ -6,6 +6,7 @@ import shutil
 import hashlib
 import re
 import json
+import time
 import email
 from email import policy
 import email.utils
@@ -55,7 +56,7 @@ class EMLExtractor():
             with open(file_path, 'r', encoding='utf-8') as config_file:
                 self.ioc_definitions = json.load(config_file)
         except:
-            print(f"[ERROR] Error loading '{file_path}' file")
+            print(f"[{time.strftime('%H:%M:%S')}] [ERROR] Error loading '{file_path}' file")
             logging.error(f"Error loading '{file_path}' file")
             sys.exit(1)
 
@@ -65,7 +66,7 @@ class EMLExtractor():
                 loaded_data = json.load(whitelist_file)
                 self.x_header_whitelist = loaded_data['headers']
         except:
-            print(f"[ERROR] Error loading '{file_path}' file")
+            print(f"[{time.strftime('%H:%M:%S')}] [ERROR] Error loading '{file_path}' file")
             logging.error(f"Error loading '{file_path}' file")
             sys.exit(1)
 
@@ -75,7 +76,7 @@ class EMLExtractor():
                 loaded_data = json.load(interesting_headers_file)
                 self.interesting_headers = loaded_data['headers']
         except:
-            print(f"[ERROR] Error loading '{file_path}' file")
+            print(f"[{time.strftime('%H:%M:%S')}] [ERROR] Error loading '{file_path}' file")
             logging.error(f"Error loading '{file_path}' file")
             sys.exit(1)
 
@@ -85,15 +86,16 @@ class EMLExtractor():
         self.sample_name, self.sample_extension = os.path.splitext(
             self.sample_file)
         
-        print(f"[INFO] Processing '{self.sample_path}'")
+        print(f"[{time.strftime('%H:%M:%S')}] [INFO] Processing '{self.sample_path}'")
+        logging.info(f"Processing '{self.sample_path}'")
 
-        self.anal_dir = os.path.join(self.sample_dir, self.sample_name)
-        if not os.path.isdir(self.anal_dir):
-                os.mkdir(self.anal_dir)
-                os.mkdir(os.path.join(self.anal_dir, 'attachments'))
+        self.base_dir = os.path.join(self.sample_dir, self.sample_name)
+        if not os.path.isdir(self.base_dir):
+                os.mkdir(self.base_dir)
+                os.mkdir(os.path.join(self.base_dir, 'attachments'))
 
-        self.anal_path = os.path.join(self.anal_dir, '.'.join([self.sample_name, 'eml']))
-        print(f"[INFO] Ready for parsing '{self.anal_path}' file")
+        self.anal_path = os.path.join(self.base_dir, '.'.join([self.sample_name, 'eml']))
+        print(f"[{time.strftime('%H:%M:%S')}] [INFO] Ready for parsing '{self.anal_path}' file")
         logging.info(f"Ready for parsing '{self.anal_path}' file")
         shutil.copy(os.path.join(self.sample_path), self.anal_path)
         with open(self.anal_path, 'r') as file:
@@ -118,27 +120,27 @@ class EMLExtractor():
             body = ""
         extracted_data['email_body'] = body
         if body:
-            file_path = os.path.join(self.anal_dir, 'email_body.txt')
+            file_path = os.path.join(self.base_dir, 'email_body.txt')
             with open(file_path, "w") as out_file:
                 out_file.write(body)
-            print(f"[INFO] Extracted email body to '{file_path}'")
+            print(f"[{time.strftime('%H:%M:%S')}] [INFO] Extracted email body to '{file_path}'")
             logging.info(f"Extracted email body to '{file_path}'")
         else:
-            print(f"[INFO] Email does not contain body")
+            print(f"[{time.strftime('%H:%M:%S')}] [INFO] Email does not contain body")
             logging.info(f"Email does not contain body")
 
         # HEADERS
         extracted_data['interesting_headers'] = []
-        extracted_header_path = os.path.join(self.anal_dir, 'header.txt')
+        extracted_header_path = os.path.join(self.base_dir, 'header.txt')
         parser = HeaderParser()
         header = parser.parsestr(str(mail))
 
         received_fields = parse_received_fields(mail_bytes)
-        file_path = os.path.join(self.anal_dir, 'received_fields.json')
+        file_path = os.path.join(self.base_dir, 'received_fields.json')
         with open(file_path, "w") as out_file:
             out_file.write(json.dumps(
                 received_fields, indent=2, sort_keys=False))
-        print(f"[INFO] Parsed 'Received' headers to '{file_path}'")
+        print(f"[{time.strftime('%H:%M:%S')}] [INFO] Parsed 'Received' headers to '{file_path}'")
         logging.info(f"Parsed 'Received' headers to '{file_path}'")
 
         with open(extracted_header_path, "w") as out_file:
@@ -152,7 +154,7 @@ class EMLExtractor():
                     out_file.write(f"{key}: {value}\n")
                 elif key in self.x_header_whitelist:
                     out_file.write(f"{key}: {value}\n")
-        print("[INFO] Extracted all email headers")
+        print(f"[{time.strftime('%H:%M:%S')}] [INFO] Extracted all email headers")
         logging.info('Extracted all email headers')
 
         # DATA from HEADERS
@@ -193,7 +195,7 @@ class EMLExtractor():
 
         extracted_data['email_subject'] = mail['Subject']
 
-        print("[INFO] Parsed and extracted data from email headers")
+        print(f"[{time.strftime('%H:%M:%S')}] [INFO] Parsed and extracted data from email headers")
         logging.info('Parsed and extracted data from email headers')
 
         extracted_data['email_attachments'] = []
@@ -205,9 +207,8 @@ class EMLExtractor():
                     file_extension = filetype.split("/")[1]
                     filename = f"{part.get_filename()}.{file_extension}"
 
-                    local_path = os.path.join(self.anal_dir, 'attachments', filename)
-                    print(
-                        f"[INFO] Extracted attachment to {local_path}")
+                    local_path = os.path.join(self.base_dir, 'attachments', filename)
+                    print(f"[{time.strftime('%H:%M:%S')}] [INFO] Extracted attachment to {local_path}")
                     decoded_payload = part.get_payload(decode=True)
                     with open(local_path, "wb") as att_file:
                         att_file.write(decoded_payload)
@@ -237,12 +238,12 @@ class EMLExtractor():
                 ioc_entry.update({ioc_type: data})
                 extracted_data['iocs'].append(ioc_entry)
         if extracted_data['iocs']:
-            print(f"[INFO] Extracted IOCs")
+            print(f"[{time.strftime('%H:%M:%S')}] [INFO] Extracted IOCs")
             logging.info(f"Extracted IOCs")
 
-        file_path = os.path.join(self.anal_dir, 'extracted_data.json') 
+        file_path = os.path.join(self.base_dir, 'extracted_data.json') 
         with open(file_path, "w") as out_file:
             out_file.write(json.dumps(
                 extracted_data, indent=2, sort_keys=False))
-        print(f"[INFO] Written extracted data to '{file_path}'")
+        print(f"[{time.strftime('%H:%M:%S')}] [INFO] Written extracted data to '{file_path}'")
         logging.info(f"Written extracted data to '{file_path}'")

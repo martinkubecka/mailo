@@ -2,6 +2,7 @@ import os
 import argparse
 import logging
 import sys
+import time
 
 from extractors.eml_extractor import EMLExtractor
 from extractors.msg_extractor import MSGExtractor
@@ -18,29 +19,25 @@ def banner():
            ||   
      """)
 
-def arg_formatter():
-    """
-    source : https://stackoverflow.com/questions/52605094/python-argparse-increase-space-between-parameter-and-description
-    """
 
+def arg_formatter():
     def formatter(prog): return argparse.HelpFormatter(
         prog, max_help_position=52)
-
     return formatter
 
-# print extracted data, received_parsed, email_body
+
 def parse_args():
     parser = argparse.ArgumentParser(formatter_class=arg_formatter(),
-                                     description='Parse EML or MSG email file types and extract various Indicators of Compromise.')
+                                     description='Process EML and MSG file types and extract various Indicators of Compromise.')
     parser.add_argument(
-        '-q', '--quiet', help="do not print the banner", action='store_true')
+        '-q', '--quiet', help="do not print banner", action='store_true')
     parser.add_argument("-i", "--input", metavar="FILENAME",
                         help="input file (MSG/EML file types supported)", required=True)
     # parser.add_argument("-a", "--anonymize", action='store_true',
     #                     help="anonymize email headers (NOTE: experimental feature)")
-    
-    args = parser.parse_args()
-    return parser, args
+
+    return parser.parse_args(args=None if sys.argv[1:] else ['--help'])
+
 
 
 def init_logger():
@@ -70,7 +67,7 @@ def main():
 
     init_logger()
 
-    parser, args = parse_args()
+    args = parse_args()
 
     if not args.quiet:
         banner()
@@ -78,12 +75,14 @@ def main():
     filepath = args.input
 
     if not os.path.isfile(filepath):
+        print(f"[{time.strftime('%H:%M:%S')}] [ERROR] Provided file '{filepath}' does not exist")
         logging.error(f"Provided file '{filepath}' does not exist")
-        parser.error(f"\n[ERROR] Provided file '{filepath}' does not exist")
+        print("\nExiting program ...\n")
+        sys.exit(1)
     else:
         sample_name, sample_extension = os.path.splitext(filepath)
         if sample_extension not in ['.eml', '.EML', '.msg', '.MSG']:
-            print('[ERROR] File to process must be EML/MSG file type')
+            print(f"[{time.strftime('%H:%M:%S')}] [ERROR] File to process must be EML/MSG file type")
             logging.error('File to process must be EML/MSG file type')
             print("\nExiting program ...\n")
             sys.exit(1)

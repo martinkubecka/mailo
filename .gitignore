@@ -2,4 +2,4 @@ __pycache__
 logs/*
 samples/
 testing/
-extractors/__init__.py
+venv/

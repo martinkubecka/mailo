@@ -1,6 +1,6 @@
 <p align="center">
 <img src="https://github.com/martinkubecka/mailo/blob/main/docs/banner.png" alt="Logo">
-<p align="center"><b>Parse EML or MSG email file types and extract various Indicators of Compromise.</b><br>
+<p align="center"><b>Process EML and MSG file types and extract various Indicators of Compromise.</b><br>
 </p>
 
 ---
@@ -27,17 +27,26 @@ $ git clone https://github.com/martinkubecka/mailo.git
 $ pip install -r requirements.txt
 ```
 
+- `mail-parser` package requires `Email::Outlook::Message` Perl module for reading Outlook MSG files without need to install Outlook itself
+- you can install this Perl module with `libemail-outlook-message-perl` package on Debian based systems with the following command
+
+```
+$ sudo apt-get install libemail-outlook-message-perl
+```
+
+- for other systems see `INSTALLATION` section in the [email-outlook-message-perl](https://github.com/mvz/email-outlook-message-perl) repository
+
 ---
 ## :desktop_computer: Usage
 
 ```
 usage: mailo.py [-h] [-q] -i FILENAME
 
-Parse EML or MSG email file types and extract various Indicators of Compromise.
+Process EML and MSG file types and extract various Indicators of Compromise.
 
 options:
   -h, --help                     show this help message and exit
-  -q, --quiet                    do not print the banner
+  -q, --quiet                    do not print banner
   -i FILENAME, --input FILENAME  input file (MSG/EML file types supported)
 ```
 

@@ -8,6 +8,7 @@ import hashlib
 import re
 import base64
 import json
+import time
 
 ############################ MSG ############################
 # https://pypi.org/project/mail-parser/
@@ -23,7 +24,7 @@ class MSGExtractor():
             with open(file_path, 'r', encoding='utf-8') as config_file:
                 self.ioc_definitions = json.load(config_file)
         except:
-            print(f"[ERROR] Error loading '{file_path}' file")
+            print(f"[{time.strftime('%H:%M:%S')}] [ERROR] Error loading '{file_path}' file")
             logging.error(f"Error loading '{file_path}' file")
             sys.exit(1)
 
@@ -33,7 +34,7 @@ class MSGExtractor():
                 loaded_data = json.load(whitelist_file)
                 self.x_header_whitelist = loaded_data['headers']
         except:
-            print(f"[ERROR] Error loading '{file_path}' file")
+            print(f"[{time.strftime('%H:%M:%S')}] [ERROR] Error loading '{file_path}' file")
             logging.error(f"Error loading '{file_path}' file")
             sys.exit(1)
 
@@ -43,7 +44,7 @@ class MSGExtractor():
                 loaded_data = json.load(interesting_headers_file)
                 self.interesting_headers = loaded_data['headers']
         except:
-            print(f"[ERROR] Error loading '{file_path}' file")
+            print(f"[{time.strftime('%H:%M:%S')}] [ERROR] Error loading '{file_path}' file")
             logging.error(f"Error loading '{file_path}' file")
             sys.exit(1)
 
@@ -53,15 +54,16 @@ class MSGExtractor():
         self.sample_name, self.sample_extension = os.path.splitext(
             self.sample_file)
 
-        print(f"[INFO] Processing '{self.sample_path}'")
+        print(f"[{time.strftime('%H:%M:%S')}] [INFO] Processing '{self.sample_path}'")
+        logging.info(f"Processing '{self.sample_path}'")
 
-        self.anal_dir = os.path.join(self.sample_dir, self.sample_name)
-        if not os.path.isdir(self.anal_dir):
-                os.mkdir(self.anal_dir)
-                os.mkdir(os.path.join(self.anal_dir, 'attachments'))
+        self.base_dir = os.path.join(self.sample_dir, self.sample_name)
+        if not os.path.isdir(self.base_dir):
+                os.mkdir(self.base_dir)
+                os.mkdir(os.path.join(self.base_dir, 'attachments'))
 
-        self.anal_path = os.path.join(self.anal_dir, '.'.join([self.sample_name, 'msg']))
-        print(f"[INFO] Ready for parsing '{self.anal_path}' file")
+        self.anal_path = os.path.join(self.base_dir, '.'.join([self.sample_name, 'msg']))
+        print(f"[{time.strftime('%H:%M:%S')}] [INFO] Ready for parsing '{self.anal_path}' file")
         logging.info(f"Ready for parsing '{self.anal_path}' file")
         shutil.copy(os.path.join(self.sample_path), self.anal_path)
         self.message = mailparser.parse_from_file_msg(self.anal_path)
@@ -75,23 +77,23 @@ class MSGExtractor():
         # hyperlinks are shown inside '< >'
         body = mail.body
         extracted_data['email_body'] = body
-        file_path = os.path.join(self.anal_dir, 'email_body.txt')
+        file_path = os.path.join(self.base_dir, 'email_body.txt')
         with open(file_path, "w") as out_file:
             out_file.write(body)
-        print(f"[INFO] Extracted email body to '{file_path}'")
+        print(f"[{time.strftime('%H:%M:%S')}] [INFO] Extracted email body to '{file_path}'")
         logging.info(f"Extracted email body to '{file_path}'")
 
         # HEADERS
         extracted_data['interesting_headers'] = []
-        extracted_header_path = os.path.join(self.anal_dir, 'header.txt')
+        extracted_header_path = os.path.join(self.base_dir, 'header.txt')
         header = mail.headers
         received_raw = mail.received_raw
         received_json = mail.received_json
 
-        file_path = os.path.join(self.anal_dir, 'received_parsed.json')
+        file_path = os.path.join(self.base_dir, 'received_parsed.json')
         with open(file_path, "w") as out_file:
             out_file.write(received_json)
-        print(f"[INFO] Parsed 'Received' headers to '{file_path}'")
+        print(f"[{time.strftime('%H:%M:%S')}] [INFO] Parsed 'Received' headers to '{file_path}'")
         logging.info(f"Parsed 'Received' headers to '{file_path}'")
 
         with open(extracted_header_path, "w") as out_file:
@@ -109,7 +111,7 @@ class MSGExtractor():
                     out_file.write(f"{key}: {value}\n")
                 elif key in self.x_header_whitelist:
                     out_file.write(f"{key}: {value}\n")
-        print("[INFO] Extracted all email headers")
+        print(f"[{time.strftime('%H:%M:%S')}] [INFO] Extracted all email headers")
         logging.info('Extracted all email headers')
 
         # DATA from HEADERS
@@ -143,14 +145,15 @@ class MSGExtractor():
 
         extracted_data['email_subject'] = mail.subject
 
-        print("[INFO] Parsed and extracted data from email headers")
+        print(f"[{time.strftime('%H:%M:%S')}] [INFO] Parsed and extracted data from email headers")
         logging.info('Parsed and extracted data from email headers')
 
         extracted_data['email_attachments'] = []
         attachments = mail.attachments
         for entry in attachments:
-            local_path = os.path.join(self.anal_dir, 'attachments', entry['filename'])
-            print(f"[INFO] Extracted attachment to '{local_path}'")
+            local_path = os.path.join(self.base_dir, 'attachments', entry['filename'])
+            print(f"[{time.strftime('%H:%M:%S')}] [INFO] Extracted attachment to '{local_path}'")
+            logging.info("Extracted attachment to '{local_path}'")
             encoded_payload = entry['payload']
             decoded_payload = base64.urlsafe_b64decode(encoded_payload)
             with open(local_path, "wb") as att_file:
@@ -182,12 +185,12 @@ class MSGExtractor():
                 ioc_entry.update({ioc_type: data})
                 extracted_data['iocs'].append(ioc_entry)
         if extracted_data['iocs']:
-            print(f"[INFO] Extracted IOCs")
+            print(f"[{time.strftime('%H:%M:%S')}] [INFO] Extracted IOCs")
             logging.info(f"Extracted IOCs")
 
-        file_path = os.path.join(self.anal_dir, 'extracted_data.json') 
+        file_path = os.path.join(self.base_dir, 'extracted_data.json') 
         with open(file_path, "w") as out_file:
             out_file.write(json.dumps(
                 extracted_data, indent=2, sort_keys=False))
-        print(f"[INFO] Written extracted data to '{file_path}'")
+        print(f"[{time.strftime('%H:%M:%S')}] [INFO] Written extracted data to '{file_path}'")
         logging.info(f"Written extracted data to '{file_path}'")
