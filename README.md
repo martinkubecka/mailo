@@ -40,7 +40,7 @@ $ sudo apt-get install libemail-outlook-message-perl
 ## :desktop_computer: Usage
 
 ```
-usage: mailo.py [-h] [-q] -i FILENAME
+usage: mailo.py [-h] [-q] (-i FILENAME | -b PATH)
 
 Process EML and MSG file types and extract various Indicators of Compromise.
 
@@ -48,6 +48,7 @@ options:
   -h, --help                     show this help message and exit
   -q, --quiet                    do not print banner
   -i FILENAME, --input FILENAME  input file (MSG/EML file types supported)
+  -b PATH, --bulk-input PATH     input folder (MSG/EML file types supported)
 ```
 
 ---

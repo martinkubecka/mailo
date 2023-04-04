@@ -9,15 +9,7 @@ from extractors.msg_extractor import MSGExtractor
 
 
 def banner():
-    print(r"""
-             _
-            [_|
-       .-=====|=-.
-       | m@ilo   |
-       |_________|__/
-           ||
-           ||   
-     """)
+    print("[     m@ilo     ]")
 
 
 def arg_formatter():
@@ -31,13 +23,15 @@ def parse_args():
                                      description='Process EML and MSG file types and extract various Indicators of Compromise.')
     parser.add_argument(
         '-q', '--quiet', help="do not print banner", action='store_true')
-    parser.add_argument("-i", "--input", metavar="FILENAME",
-                        help="input file (MSG/EML file types supported)", required=True)
+    required_group = parser.add_mutually_exclusive_group(required=True)
+    required_group.add_argument("-i", "--input", metavar="FILENAME",
+                                help="input file (MSG/EML file types supported)")
+    required_group.add_argument("-b", "--bulk-input", metavar="PATH",
+                                help="input folder (MSG/EML file types supported)")
     # parser.add_argument("-a", "--anonymize", action='store_true',
     #                     help="anonymize email headers (NOTE: experimental feature)")
 
     return parser.parse_args(args=None if sys.argv[1:] else ['--help'])
-
 
 
 def init_logger():
@@ -72,27 +66,59 @@ def main():
     if not args.quiet:
         banner()
 
-    filepath = args.input
+    print('-' * os.get_terminal_size().columns)
 
-    if not os.path.isfile(filepath):
-        print(f"[{time.strftime('%H:%M:%S')}] [ERROR] Provided file '{filepath}' does not exist")
-        logging.error(f"Provided file '{filepath}' does not exist")
-        print("\nExiting program ...\n")
-        sys.exit(1)
-    else:
-        sample_name, sample_extension = os.path.splitext(filepath)
-        if sample_extension not in ['.eml', '.EML', '.msg', '.MSG']:
-            print(f"[{time.strftime('%H:%M:%S')}] [ERROR] File to process must be EML/MSG file type")
-            logging.error('File to process must be EML/MSG file type')
+    file_path = args.input
+    folder_path = args.bulk_input
+
+    if file_path:
+        if not os.path.isfile(file_path):
+            print(
+                f"[{time.strftime('%H:%M:%S')}] [ERROR] Provided file '{file_path}' does not exist")
+            logging.error(f"Provided file '{file_path}' does not exist")
             print("\nExiting program ...\n")
             sys.exit(1)
+        else:
+            sample_name, sample_extension = os.path.splitext(file_path)
+            if sample_extension not in ['.eml', '.EML', '.msg', '.MSG']:
+                print(
+                    f"[{time.strftime('%H:%M:%S')}] [ERROR] File to process must be EML/MSG file type")
+                logging.error('File to process must be EML/MSG file type')
+                print("\nExiting program ...\n")
+                sys.exit(1)
 
-        if sample_extension.lower() == ".msg":
-            entity_msgtractor = MSGExtractor()
-            entity_msgtractor.process_sample(filepath)
-        elif sample_extension.lower() == ".eml":
-            entity_emltractor = EMLExtractor()
-            entity_emltractor.process_sample(filepath)
+            if sample_extension.lower() == ".msg":
+                entity_msgtractor = MSGExtractor()
+                entity_msgtractor.process_sample(file_path)
+            elif sample_extension.lower() == ".eml":
+                entity_emltractor = EMLExtractor()
+                entity_emltractor.process_sample(file_path)
+        
+        print('-' * os.get_terminal_size().columns)
+
+    if folder_path:
+        if not os.path.isdir(folder_path):
+            print(
+                f"[{time.strftime('%H:%M:%S')}] [ERROR] Provided folder '{folder_path}' does not exist")
+            logging.error(f"Provided folder '{folder_path}' does not exist")
+            print("\nExiting program ...\n")
+            print('-' * os.get_terminal_size().columns)
+            sys.exit(1)
+        else:
+            files = []
+            for file in os.listdir(folder_path):
+                if file.endswith(".eml") or file.endswith(".msg"):
+                    files.append(os.path.join(folder_path, file))
+            for file_path in files:
+                sample_name, sample_extension = os.path.splitext(file_path)
+                if sample_extension.lower() == ".msg":
+                    entity_msgtractor = MSGExtractor()
+                    entity_msgtractor.process_sample(file_path)
+                elif sample_extension.lower() == ".eml":
+                    entity_emltractor = EMLExtractor()
+                    entity_emltractor.process_sample(file_path)
+
+                print('-' * os.get_terminal_size().columns)
 
 
 if __name__ == "__main__":

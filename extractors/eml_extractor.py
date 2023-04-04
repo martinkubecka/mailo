@@ -16,38 +16,42 @@ from email.parser import HeaderParser
 
 def parse_received_fields(mail_bytes):
         fields_Received = mail_bytes.get_all('Received')
-        received_fileds = []
-        split_rules = {
-            'date': ';',
-            'for': 'for',
-            'id': 'id',
-            'with': 'with',
-            'via': 'via',
-            'by': 'by',
-            'from': 'from'
-        }
-        for field in fields_Received:
-            parts = {}
-            for keyword, split_string in split_rules.items():
-                if split_string in field:
-                    split_field = field.rsplit(split_string, 1)
-                    parts[keyword] = split_field[1].strip()
-                    field = split_field[0]
-                else:
-                    parts[keyword] = ''
-
-            # try:
-            #     unix_timestamp = email.utils.mktime_tz(email.utils.parsedate_tz(parts['date']))
-            #     utc_no_timezone = datetime.utcfromtimestamp(unix_timestamp).strftime('%Y-%m-%d %H:%M:%S')
-            #     parts['date_no_timezone'] = utc_no_timezone
-            #     parts['date_unix'] = unix_timestamp
-            # except:
-            #     print('[WARNING] Unable to execute date conversion')
-            #     logging.warning("Unable to execute date conversion")
-            
-            received_fileds.append(parts)
         
-        return received_fileds
+        if fields_Received:
+            received_fileds = []
+            split_rules = {
+                'date': ';',
+                'for': 'for',
+                'id': 'id',
+                'with': 'with',
+                'via': 'via',
+                'by': 'by',
+                'from': 'from'
+            }
+            for field in fields_Received:
+                parts = {}
+                for keyword, split_string in split_rules.items():
+                    if split_string in field:
+                        split_field = field.rsplit(split_string, 1)
+                        parts[keyword] = split_field[1].strip()
+                        field = split_field[0]
+                    else:
+                        parts[keyword] = ''
+
+                # try:
+                #     unix_timestamp = email.utils.mktime_tz(email.utils.parsedate_tz(parts['date']))
+                #     utc_no_timezone = datetime.utcfromtimestamp(unix_timestamp).strftime('%Y-%m-%d %H:%M:%S')
+                #     parts['date_no_timezone'] = utc_no_timezone
+                #     parts['date_unix'] = unix_timestamp
+                # except:
+                #     print('[WARNING] Unable to execute date conversion')
+                #     logging.warning("Unable to execute date conversion")
+                
+                received_fileds.append(parts)
+        
+            return received_fileds
+        else:
+            return None
 
 class EMLExtractor():
     def __init__(self):
@@ -161,21 +165,23 @@ class EMLExtractor():
         extracted_data['email_entry_id'] = mail['Message-ID']
         extracted_data['email_received_time'] = mail['Date']
 
-        sender = mail["From"]
-        extracted_data['email_sender'] = dict(
-            name=sender.split(" ")[0],
-            address=sender.split(" ")[1])
+        mail_from = mail["From"]
+        mail_from = mail_from.replace("<",  "").replace(">", "") if "<" or ">" in mail_from else mail_from
+        extracted_data['email_sender'] = mail_from 
 
         # NOTE: eml samples weird format for recipients : list("email1, email2")
         # TODO: test this with a sample which contains recipients in format "NAME ADDRESS"
         extracted_data['email_recipient'] = []
         # list, all  recipients emails addresses in list[0]
         recipients = mail.get_all('To')
-        recipients_address = recipients[0].split(",")
-        for recipient in recipients_address:
-            extracted_data['email_recipient'].append(dict(
-                name="",
-                address=recipient.strip()))
+        if recipients:
+            recipients_address = recipients[0].split(",")
+            for recipient in recipients_address:
+                extracted_data['email_recipient'].append(dict(
+                    name="",
+                    address=recipient.strip()))
+        else:
+            extracted_data['email_recipient'].append(dict())
 
         extracted_data['email_cc'] = []
         email_cc = mail['Cc']

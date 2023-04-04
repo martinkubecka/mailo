@@ -119,13 +119,19 @@ class MSGExtractor():
 
         extracted_data['email_received_time'] = f"{mail.date} UTC {mail.timezone}"
 
-        extracted_data['email_sender'] = dict(
-            name=mail.from_[0][0],
-            address=mail.from_[0][1])
+        mail_from = [" ".join(entry) for entry in mail.from_] 
+        extracted_data['email_sender'] = mail_from
+
+        try:
+            recipient_name = mail.to[0][0]
+            recipient_address = mail.to[0][1]
+        except IndexError as e:
+            recipient_name = ""
+            recipient_address = ""
 
         extracted_data['email_recipient'] = dict(
-            name=mail.to[0][0],
-            address=mail.to[0][1])
+            name=recipient_name,
+            address=recipient_address)
 
         # only name wihtout the email address
         # extracted_data['email_to_name'] = mail.to[0][0]   # REDUNDANT
@@ -151,7 +157,8 @@ class MSGExtractor():
         extracted_data['email_attachments'] = []
         attachments = mail.attachments
         for entry in attachments:
-            local_path = os.path.join(self.base_dir, 'attachments', entry['filename'])
+            filename = entry['filename'].replace('\n', '').replace('\r', '')
+            local_path = os.path.join(self.base_dir, 'attachments', filename)
             print(f"[{time.strftime('%H:%M:%S')}] [INFO] Extracted attachment to '{local_path}'")
             logging.info("Extracted attachment to '{local_path}'")
             encoded_payload = entry['payload']
